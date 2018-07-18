@@ -73,18 +73,28 @@ function GetUserMediaToText(opts) {
     // });
     
     //set the master volume of mic and speakr with the slider change
-    document.getElementById('volume').onchange = function () {
+    document.getElementById('Svolume').onchange = function () {
       // this.value---> Any number between 0 and 1.
       speaker.set(this.value * 100);
+      
+    };
+    document.getElementById('Mvolume').onchange = function () {
+      // this.value---> Any number between 0 and 1.
+      
       mic.set(this.value * 100);
     };
 
     speaker.polling(200);
-
+    mic.polling(200);
     //change of master volume
     speaker.events.on('change', (volume) => {
-      console.log("old %d%% -> new %d%%", volume.old, volume.new);
-      document.getElementById('volume').value = volume.new / 100
+      console.log("S-old %d%% -> S-new %d%%", volume.old, volume.new);
+      document.getElementById('Svolume').value = volume.new / 100
+    });
+    
+    mic.events.on('change', (volume) => {
+      console.log("M-old %d%% -> M-new %d%%", volume.old, volume.new);
+      document.getElementById('Mvolume').value = volume.new / 100
     });
 
     speaker.events.on('toggle', (status) => {
@@ -166,21 +176,6 @@ GetUserMediaToText.prototype.clearPipeline = function () {
 
   });
  
-  recorder.exportWAV(function (mp3Blob) { // Export the recording as a Blob
-    //console.log("Here is your blob: " + URL.createObjectURL(mp3Blob));
-    var reader = new FileReader()
-    reader.onload = function () {
-      var buffer = new Buffer(reader.result)
-      fs.writeFile('test1.wav', buffer, {}, (err, res) => {
-        if (err) {
-          console.error(err)
-          return
-        }
-        console.log('audio-wav saved')
-      })
-    }
-    reader.readAsArrayBuffer(mp3Blob)
-  });
   //new Audio(URL.createObjectURL(mp3Blob)).play(); //playing the audio stream just saved
   this.emit('status', 'Stopped listening')
 }

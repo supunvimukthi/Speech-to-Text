@@ -77,7 +77,8 @@ function view (state, emit) {
           ? html`<button onclick=${() => emit('stop')}>stop conversion</button>`
           : html`<button onclick=${() => emit('listen')}>start conversion</button>`}
       </div>
-      Volume: <input type=range id=volume min=0 max=1  step=0.01><br><br>
+      Speaker Volume: <input type=range id=Svolume min=0 max=1  step=0.01><br><br>
+      MIC Volume: <input type=range id=Mvolume min=0 max=1  step=0.01><br><br>
       <div>Output text : </div>
       <div>
         ${state.msgs.map(msg => html`
