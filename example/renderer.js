@@ -4,9 +4,13 @@ var app = choo()
 var SpeechToText = require('../')
 var path = require('path')
 var log = require('choo-log')
+
+
+console.log("process.env.GOOGLE_SPEECH_API_CONFIG : ", process.env.GOOGLE_SPEECH_API_CONFIG);
+
 var s2t = new SpeechToText({
   projectId: 'getusermedia-to-text',
-  keyFilename: path.join(__dirname, 'auth.json')
+  keyFilename: process.env.GOOGLE_SPEECH_API_CONFIG
 })
 
 window.s2t = s2t
@@ -67,6 +71,7 @@ function view (state, emit) {
           ? html`<button onclick=${() => emit('stop')}>stop</button>`
           : html`<button onclick=${() => emit('listen')}>start</button>`}
       </div>
+      Volume: <input type=range id=volume min=0 max=1  step=0.01>
       <div>output</div>
       <div>
         ${state.msgs.map(msg => html`
