@@ -37,7 +37,13 @@ function store (state, bus) {
 
   s2t.on('data', apiLog)
   function apiLog (data) {
-    state.msgs.push(JSON.stringify(data))
+    if(data.results[0] !=null){
+      state.msgs.push(JSON.stringify(data.results[0].transcript))
+    }else{
+      state.msgs.push(JSON.stringify(data))
+    }
+
+    
     bus.emit('render')
   }
 
@@ -68,11 +74,11 @@ function view (state, emit) {
     <main>
       <div>
         ${state.listening
-          ? html`<button onclick=${() => emit('stop')}>stop</button>`
-          : html`<button onclick=${() => emit('listen')}>start</button>`}
+          ? html`<button onclick=${() => emit('stop')}>stop conversion</button>`
+          : html`<button onclick=${() => emit('listen')}>start conversion</button>`}
       </div>
-      Volume: <input type=range id=volume min=0 max=1  step=0.01>
-      <div>output</div>
+      Volume: <input type=range id=volume min=0 max=1  step=0.01><br><br>
+      <div>Output text : </div>
       <div>
         ${state.msgs.map(msg => html`
           <div>${msg}</div>

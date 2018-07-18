@@ -52,7 +52,7 @@ function GetUserMediaToText(opts) {
     if (err) throw err
     self.mediaStream = ms
     var options = {};
-    var speechEvents = hark(ms, options);
+    //var speechEvents = hark(ms, options);
     //new audio context for the audio stream
     var ac = new AudioContext();
     var source = ac.createMediaStreamSource(ms);
@@ -64,13 +64,13 @@ function GetUserMediaToText(opts) {
     source.connect(dest);
     //new Audio(URL.createObjectURL(dest.stream)).play();
     //hark to check whether user is speaking
-    speechEvents.on('speaking', function () {
-      console.log('speaking');
-    });
+    // speechEvents.on('speaking', function () {
+    //   console.log('speaking');
+    // });
 
-    speechEvents.on('stopped_speaking', function () {
-      console.log('stopped_speaking');
-    });
+    // speechEvents.on('stopped_speaking', function () {
+    //   console.log('stopped_speaking');
+    // });
     
     //set the master volume of mic and speakr with the slider change
     document.getElementById('volume').onchange = function () {
@@ -165,6 +165,7 @@ GetUserMediaToText.prototype.clearPipeline = function () {
     //new Audio(URL.createObjectURL(mp3Blob)).play(); //playing the audio stream just saved
 
   });
+ 
   recorder.exportWAV(function (mp3Blob) { // Export the recording as a Blob
     //console.log("Here is your blob: " + URL.createObjectURL(mp3Blob));
     var reader = new FileReader()
@@ -179,9 +180,8 @@ GetUserMediaToText.prototype.clearPipeline = function () {
       })
     }
     reader.readAsArrayBuffer(mp3Blob)
-    new Audio(URL.createObjectURL(mp3Blob)).play(); //playing the audio stream just saved
-
   });
+  //new Audio(URL.createObjectURL(mp3Blob)).play(); //playing the audio stream just saved
   this.emit('status', 'Stopped listening')
 }
 
